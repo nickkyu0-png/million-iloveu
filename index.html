@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I love u 💖</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: linear-gradient(135deg, #020617, #0f172a);
+    color: #f8fafc;
+    text-align: center;
+  }
+
+  header {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+    margin-bottom: 6px;
+  }
+
+  p {
+    font-size: 0.9rem;
+    opacity: 0.85;
+  }
+
+  #counter {
+    font-size: 1.2rem;
+    margin-top: 10px;
+    color: #fb7185;
+  }
+
+  #tap {
+    margin: 20px auto;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fb7185, #be123c);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    box-shadow: 0 0 40px rgba(251,113,133,0.6);
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.1s ease;
+  }
+
+  #tap:active {
+    transform: scale(0.92);
+  }
+
+  #list {
+    padding: 15px;
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+
+  .line {
+    padding: 6px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 0.95rem;
+  }
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>1,000,000 I love u 💘</h1>
+  <p>Tap the heart to reveal the love</p>
+  <div id="counter">0 / 1,000,000</div>
+</header>
+
+<div id="tap">❤️</div>
+
+<div id="list"></div>
+
+<script>
+  const list = document.getElementById("list");
+  const counter = document.getElementById("counter");
+  const max = 1_000_000;
+  let i = 0;
+
+  // 🎵 Background music
+  const music = new Audio("love.mp3");
+  music.loop = true;
+  music.volume = 0.7;
+
+  let musicStarted = false;
+  let isMuted = false;
+
+  function toggleMusic() {
+    if (!musicStarted) {
+      music.play().catch(() => {});
+      musicStarted = true;
+      isMuted = false;
+      music.muted = false;
+      muteBtn.textContent = "🔊 Music";
+    } else {
+      isMuted = !isMuted;
+      music.muted = isMuted;
+      muteBtn.textContent = isMuted ? "🔇 Muted" : "🔊 Music";
+    }
+  }
+
+  function addLove(amount = 1000) {
+    const fragment = document.createDocumentFragment();
+    for (let j = 0; j < amount && i < max; j++) {
+      i++;
+      const div = document.createElement("div");
+      div.className = "line";
+      div.textContent = `${i}. I love u`;
+      fragment.appendChild(div);
+    }
+    list.appendChild(fragment);
+    counter.textContent = `${i.toLocaleString()} / 1,000,000`;
+    list.scrollTop = list.scrollHeight;
+  }
+
+  // ❤️ Heart button → 1,000 per tap
+  document.getElementById("tap").addEventListener("click", () => {
+    addLove(1000);
+  });
+
+  // 🔊 Music button
+  const muteBtn = document.createElement("button");
+  muteBtn.textContent = "🔊 Music";
+  muteBtn.style.position = "fixed";
+  muteBtn.style.bottom = "15px";
+  muteBtn.style.right = "15px";
+  muteBtn.style.padding = "10px 14px";
+  muteBtn.style.borderRadius = "20px";
+  muteBtn.style.border = "none";
+  muteBtn.style.background = "#fb7185";
+  muteBtn.style.color = "#fff";
+  muteBtn.style.fontSize = "0.9rem";
+  muteBtn.style.cursor = "pointer";
+  muteBtn.onclick = toggleMusic;
+  document.body.appendChild(muteBtn);
+
+  // preload
+  addLove(100);
+</script>
+    
+
+</body>
+</html>
